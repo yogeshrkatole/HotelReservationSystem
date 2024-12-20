@@ -2,28 +2,49 @@ package main.java;
 
 public class Hotel {
 	private String name;
-    private double regularCustomerRate;
-    
-	@Override
-	public String toString() {
-		return "Hotel [name=" + name + ", regularCustomerRate=" + regularCustomerRate + "]";
-	}
-	public Hotel(String name, double regularCustomerRate) {
-		super();
-		this.name = name;
-		this.regularCustomerRate = regularCustomerRate;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public double getRegularCustomerRate() {
-		return regularCustomerRate;
-	}
-	public void setRegularCustomerRate(double regularCustomerRate) {
-		this.regularCustomerRate = regularCustomerRate;
-	}
+    private double regularWeekdayRate;
+    private double regularWeekendRate;
+    private double rewardsWeekdayRate;
+    private double rewardsWeekendRate;
+    private int rating;
+
+    public Hotel(String name, double regularWeekdayRate, double regularWeekendRate,
+                 double rewardsWeekdayRate, double rewardsWeekendRate, int rating) {
+        this.name = name;
+        this.regularWeekdayRate = regularWeekdayRate;
+        this.regularWeekendRate = regularWeekendRate;
+        this.rewardsWeekdayRate = rewardsWeekdayRate;
+        this.rewardsWeekendRate = rewardsWeekendRate;
+        this.rating = rating;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public double getRegularWeekdayRate() {
+        return regularWeekdayRate;
+    }
+
+    public double getRegularWeekendRate() {
+        return regularWeekendRate;
+    }
+
+    public double getRewardsWeekdayRate() {
+        return rewardsWeekdayRate;
+    }
+
+    public double getRewardsWeekendRate() {
+        return rewardsWeekendRate;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public String toString() {
+        return "Hotel{name='" + name + "', rating=" + rating + "}";
+    }
     
 }
