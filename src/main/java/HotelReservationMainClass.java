@@ -29,6 +29,8 @@ public static void main(String[] args) {
     for (String date : dateInput.split(",")) {
         dates.add(LocalDate.parse(date.trim(), formatter));
     }
+    
+    System.out.println("Cheapest Hotels By Total Rates Of Weekday and Weekend");
     List<String> cheapestHotelsByRates=new ArrayList<String>();
     cheapestHotelsByRates = system.findCheapestHotelsByWeekdayAndWeekendRates(customerType, dates);
     for(int i=0;i<cheapestHotelsByRates.size();i++) {
@@ -38,12 +40,15 @@ public static void main(String[] args) {
     
     String cheapestHotel = system.findCheapestHotel(customerType, dates);
     Double totalRates=0.0;
+    int rating=0;
     for(int i=0;i<system.getHotels().size();i++) {
     	if(cheapestHotel.equalsIgnoreCase(system.getHotels().get(i).getName())) {
     		totalRates = system.calculateTotalCost(system.getHotels().get(i), customerType, dates);
+    		rating=system.getHotels().get(i).getRating();
     	}
     }
-    System.out.println("Cheapest Hotel: " + cheapestHotel+", Total Rates:$"+totalRates);
+    System.out.println("Cheapest Hotels By Rates And Rating");
+    System.out.println("Cheapest Hotel: " + cheapestHotel+", Rating:"+rating+", Total Rates:$"+totalRates);
     
     scanner.close();
 }
