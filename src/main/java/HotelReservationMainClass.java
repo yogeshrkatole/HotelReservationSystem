@@ -29,7 +29,13 @@ public static void main(String[] args) {
     for (String date : dateInput.split(",")) {
         dates.add(LocalDate.parse(date.trim(), formatter));
     }
+    List<String> cheapestHotelsByRates=new ArrayList<String>();
+    cheapestHotelsByRates = system.findCheapestHotelsByWeekdayAndWeekendRates(customerType, dates);
+    for(int i=0;i<cheapestHotelsByRates.size();i++) {
+    	System.out.println(cheapestHotelsByRates.get(i));
+    }
 
+    
     String cheapestHotel = system.findCheapestHotel(customerType, dates);
     Double totalRates=0.0;
     for(int i=0;i<system.getHotels().size();i++) {

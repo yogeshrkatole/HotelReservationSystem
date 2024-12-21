@@ -18,7 +18,6 @@ public class Hotel {
         this.rating = rating;
     }
 
-
     public String getName() {
         return name;
     }

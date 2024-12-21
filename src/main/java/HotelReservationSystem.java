@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
+import java.util.stream.*;
 
 public class HotelReservationSystem {
 	private List<Hotel> hotels;
@@ -39,7 +40,19 @@ public class HotelReservationSystem {
 	            .orElse("No hotels available");
 	}
 
+	public List<String> findCheapestHotelsByWeekdayAndWeekendRates(String customerType, List<LocalDate> dates) {
+        double minCost = hotels.stream()
+                .mapToDouble(hotel -> calculateTotalCost(hotel, customerType, dates))
+                .min()
+                .orElse(Double.MAX_VALUE);
 
+        return hotels.stream()
+                .filter(hotel -> calculateTotalCost(hotel, customerType, dates) == minCost)
+                .map(hotel -> hotel.getName() + " (Total Cost: $" + calculateTotalCost(hotel, customerType, dates) + ")")
+                .collect(Collectors.toList());
+    }
+
+	
 	public double calculateTotalCost(Hotel hotel, String customerType, List<LocalDate> dates) {
 		double totalCost = 0;
 		boolean isRegular = customerType.equalsIgnoreCase("Regular");
