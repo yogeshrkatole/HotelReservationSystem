@@ -30,13 +30,13 @@ public static void main(String[] args) {
         dates.add(LocalDate.parse(date.trim(), formatter));
     }
     
-    System.out.println("Cheapest Hotels By Total Rates Of Weekday and Weekend");
+    System.out.println("Cheapest Hotels By Rates");
     List<String> cheapestHotelsByRates=new ArrayList<String>();
     cheapestHotelsByRates = system.findCheapestHotelsByWeekdayAndWeekendRates(customerType, dates);
     for(int i=0;i<cheapestHotelsByRates.size();i++) {
     	System.out.println(cheapestHotelsByRates.get(i));
     }
-
+     System.out.println();
     
     String cheapestHotel = system.findCheapestHotel(customerType, dates);
     Double totalRates=0.0;
@@ -49,6 +49,10 @@ public static void main(String[] args) {
     }
     System.out.println("Cheapest Hotels By Rates And Rating");
     System.out.println("Cheapest Hotel: " + cheapestHotel+", Rating:"+rating+", Total Rates:$"+totalRates);
+    System.out.println();
+    
+    System.out.println("Best Rated Hotel");
+    System.out.println(system.findBestRatedHotel(customerType, dates));
     
     scanner.close();
 }

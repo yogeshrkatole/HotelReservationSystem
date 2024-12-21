@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Comparator;
 import java.util.stream.*;
 
@@ -52,6 +53,18 @@ public class HotelReservationSystem {
                 .collect(Collectors.toList());
     }
 
+	public String findBestRatedHotel(String customerType, List<LocalDate> dates) {
+        Optional<Hotel> bestRatedHotel = hotels.stream()
+                .max((hotel1, hotel2) -> Integer.compare(hotel1.getRating(), hotel2.getRating()));
+
+        if (bestRatedHotel.isPresent()) {
+            Hotel hotel = bestRatedHotel.get();
+            double totalCost = calculateTotalCost(hotel, customerType, dates);
+            return hotel.getName() + " (Total Cost: $" + totalCost + ", Rating: " + hotel.getRating() + ")";
+        } else {
+            return "No hotels available";
+        }
+    }
 	
 	public double calculateTotalCost(Hotel hotel, String customerType, List<LocalDate> dates) {
 		double totalCost = 0;
