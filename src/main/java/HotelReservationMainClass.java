@@ -13,8 +13,9 @@ public static void main(String[] args) {
 	HotelReservationSystem system = new HotelReservationSystem();
 	
 	system.addHotel("Lakewood", 110, 90, 80, 80, 3);
-    system.addHotel("Bridgewood", 160, 60, 110, 50, 4);
+    system.addHotel("Bridgewood", 150, 50, 110, 50, 4);
     system.addHotel("Ridgewood", 220, 150, 100, 40, 5);
+    HotelReservationMainClass.showHotels(system);
 	Scanner scanner = new Scanner(System.in);
 
 	System.out.print("Enter any one customer type (Regular/Rewards): ");
@@ -39,5 +40,10 @@ public static void main(String[] args) {
     System.out.println("Cheapest Hotel: " + cheapestHotel+", Total Rates:$"+totalRates);
     
     scanner.close();
+}
+private static void showHotels(HotelReservationSystem system) {
+for(int i=0;i<system.getHotels().size();i++) {
+	System.out.println("Hotel Name:"+system.getHotels().get(i).getName()+", Regular Weekday Rates:"+system.getHotels().get(i).getRegularWeekdayRate()+", Regular Weekend Rates:"+system.getHotels().get(i).getRegularWeekendRate());
+}
 }
 }
