@@ -33,7 +33,8 @@ public class HotelReservationSystem {
 		}
 	}
 
-	public String findCheapestHotel(String customerType, List<LocalDate> dates) {
+	public String findCheapestHotel(String customerType, List<LocalDate> dates) throws IllegalArgumentException {
+		validateInputs(customerType, dates);
 	    return hotels.stream()
 	            .min(Comparator.comparingDouble((Hotel hotel) -> calculateTotalCost(hotel, customerType, dates))
 	                    .thenComparing(Hotel::getRating, Comparator.reverseOrder())) 
@@ -41,6 +42,22 @@ public class HotelReservationSystem {
 	            .orElse("No hotels available");
 	}
 
+	 private void validateInputs(String customerType, List<LocalDate> dates) {
+	        if (!customerType.equalsIgnoreCase("Regular") && !customerType.equalsIgnoreCase("Rewards")) {
+	            throw new IllegalArgumentException("Invalid customer type. Valid options are 'Regular' or 'Rewards'.");
+	        }
+
+	        if (dates == null || dates.isEmpty()) {
+	            throw new IllegalArgumentException("Date range cannot be null or empty.");
+	        }
+
+	        for (LocalDate date : dates) {
+	            if (date == null) {
+	                throw new IllegalArgumentException("Date range contains invalid dates.");
+	            }
+	        }
+	    }
+	 
 	public List<String> findCheapestHotelsByWeekdayAndWeekendRates(String customerType, List<LocalDate> dates) {
         double minCost = hotels.stream()
                 .mapToDouble(hotel -> calculateTotalCost(hotel, customerType, dates))

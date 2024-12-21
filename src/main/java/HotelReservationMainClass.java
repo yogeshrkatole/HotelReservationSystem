@@ -23,8 +23,9 @@ public static void main(String[] args) {
 
     System.out.print("Enter dates like (26Mar2009,27Mar2009,28Mar2009): ");
     String dateInput = scanner.nextLine();
-
+    
     List<LocalDate> dates = new ArrayList<>();
+    
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
     for (String date : dateInput.split(",")) {
         dates.add(LocalDate.parse(date.trim(), formatter));
