@@ -49,7 +49,7 @@ public static void main(String[] args) {
 }
 private static void showHotels(HotelReservationSystem system) {
 for(int i=0;i<system.getHotels().size();i++) {
-	System.out.println("Hotel Name:"+system.getHotels().get(i).getName()+", Regular Weekday Rates:"+system.getHotels().get(i).getRegularWeekdayRate()+", Regular Weekend Rates:"+system.getHotels().get(i).getRegularWeekendRate());
+	System.out.println("Hotel Name:"+system.getHotels().get(i).getName()+", Regular Weekday Rates:"+system.getHotels().get(i).getRegularWeekdayRate()+", Regular Weekend Rates:"+system.getHotels().get(i).getRegularWeekendRate()+",Rating:"+system.getHotels().get(i).getRating());
 }
 }
 }
