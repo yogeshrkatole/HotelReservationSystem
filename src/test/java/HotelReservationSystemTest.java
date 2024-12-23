@@ -48,5 +48,20 @@ public class HotelReservationSystemTest {
         String result = system.findCheapestHotelByRatesAndRating("Rewards", dateInput);
         assertEquals("Ridgewood (Rating: 5, Total Rates: $240.0)", result);
     }
+	
+	@Test
+	public void testFindBestRatedHotelForRegularCustomer() {
+		String dateInput="11Sep2020,12Sep2020";
+		String result=system.findBestRatedHotel("Regular", dateInput);
+		assertEquals("Ridgewood (Total Cost: $370.0, Rating: 5)", result);
+	}
+	
+	@Test
+	public void testFindBestRatedHotelForRewardCustomer() {
+		String dateInput="11Sep2020,12Sep2020";
+		String result=system.findBestRatedHotel("Rewards", dateInput);
+		assertEquals("Ridgewood (Total Cost: $140.0, Rating: 5)", result);
+	}
+	
 }
  
