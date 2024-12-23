@@ -37,29 +37,16 @@ public class HotelReservationSystemTest {
 
     @Test
     public void testFindCheapestHotelForRegularCustomer() {
-        List<LocalDate> dates = parseDates("16Mar2020", "17Mar2020", "18Mar2020");
-        String result = system.findCheapestHotel("Regular", dates);
-        assertEquals("Lakewood", result);
+        String dateInput="16Mar2020,17Mar2020,18Mar2020";
+        String result = system.findCheapestHotelByRatesAndRating("Regular", dateInput);
+        assertEquals("Lakewood (Rating: 3, Total Rates: $330.0)", result);
     }
 
 	@Test
     public void testFindCheapestHotelForRewardsCustomer() {
-        List<LocalDate> dates = parseDates("26Mar2009", "27Mar2009", "28Mar2009");
-        String result = system.findCheapestHotel("Rewards", dates);
-        assertEquals("Ridgewood", result);
-    }
-
-    
-    public static List<LocalDate> parseDates(String... dateStrings) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
-        List<LocalDate> dates = new ArrayList<>();
-
-        for (String dateString : dateStrings) {
-            LocalDate date = LocalDate.parse(dateString.trim(), formatter);
-            dates.add(date);
-        }
-
-        return dates;
+		String dateInput= "26Mar2009,27Mar2009,28Mar2009";
+        String result = system.findCheapestHotelByRatesAndRating("Rewards", dateInput);
+        assertEquals("Ridgewood (Rating: 5, Total Rates: $240.0)", result);
     }
 }
  

@@ -2,9 +2,12 @@ package main.java;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.Comparator;
 import java.util.stream.*;
 
@@ -33,32 +36,47 @@ public class HotelReservationSystem {
 		}
 	}
 
-	public String findCheapestHotel(String customerType, List<LocalDate> dates) throws IllegalArgumentException {
-		validateInputs(customerType, dates);
-	    return hotels.stream()
-	            .min(Comparator.comparingDouble((Hotel hotel) -> calculateTotalCost(hotel, customerType, dates))
-	                    .thenComparing(Hotel::getRating, Comparator.reverseOrder())) 
-	            .map(Hotel::getName)
-	            .orElse("No hotels available");
+	public String findCheapestHotelByRatesAndRating(String customerType, String dateInput) throws IllegalArgumentException {
+		validateInputs(customerType, dateInput);
+		List<LocalDate> dates = parseDates(dateInput);
+		double minCost = hotels.stream()
+                .mapToDouble(hotel -> calculateTotalCost(hotel, customerType, dates))
+                .min()
+                .orElse(Double.MAX_VALUE);
+
+        Optional<Hotel> cheapestBestRatedHotel = hotels.stream()
+                .filter(hotel -> calculateTotalCost(hotel, customerType, dates) == minCost)
+                .max((hotel1, hotel2) -> Integer.compare(hotel1.getRating(), hotel2.getRating()));
+
+        if (cheapestBestRatedHotel.isPresent()) {
+            Hotel hotel = cheapestBestRatedHotel.get();
+            double totalCost = calculateTotalCost(hotel, customerType, dates);
+            return hotel.getName() + " (Rating: " + hotel.getRating() + ", Total Rates: $" + totalCost + ")";
+        } else {
+            return "No Hotels Available";
+        }
 	}
 
-	 private void validateInputs(String customerType, List<LocalDate> dates) {
+	 private void validateInputs(String customerType, String dateInput) {
 	        if (!customerType.equalsIgnoreCase("Regular") && !customerType.equalsIgnoreCase("Rewards")) {
 	            throw new IllegalArgumentException("Invalid customer type. Valid options are 'Regular' or 'Rewards'.");
 	        }
 
-	        if (dates == null || dates.isEmpty()) {
+	        if (dateInput == null || dateInput.isEmpty()) {
 	            throw new IllegalArgumentException("Date range cannot be null or empty.");
 	        }
 
-	        for (LocalDate date : dates) {
-	            if (date == null) {
-	                throw new IllegalArgumentException("Date range contains invalid dates.");
+	        Pattern datePattern = Pattern.compile("\\d{2}[A-Za-z]{3}\\d{4}");
+	        for (String date : dateInput.split(",")) {
+	            if (!datePattern.matcher(date.trim()).matches()) {
+	                throw new IllegalArgumentException("Invalid Date Format. Please Use The Format 'ddMMMyyyy' (E.g., 11Sep2020). ");
 	            }
 	        }
 	    }
 	 
-	public List<String> findCheapestHotelsByWeekdayAndWeekendRates(String customerType, List<LocalDate> dates) {
+	public List<String> findCheapestHotelsByRates(String customerType, String dateInput) {
+		validateInputs(customerType, dateInput);
+		List<LocalDate> dates = parseDates(dateInput);
         double minCost = hotels.stream()
                 .mapToDouble(hotel -> calculateTotalCost(hotel, customerType, dates))
                 .min()
@@ -70,7 +88,9 @@ public class HotelReservationSystem {
                 .collect(Collectors.toList());
     }
 
-	public String findBestRatedHotel(String customerType, List<LocalDate> dates) {
+	public String findBestRatedHotel(String customerType, String dateInput) {
+		validateInputs(customerType, dateInput);
+		List<LocalDate> dates = parseDates(dateInput);
         Optional<Hotel> bestRatedHotel = hotels.stream()
                 .max((hotel1, hotel2) -> Integer.compare(hotel1.getRating(), hotel2.getRating()));
 
@@ -100,6 +120,20 @@ public class HotelReservationSystem {
 		return totalCost;
 	}
 	
+	public static List<LocalDate> parseDates(String dateInput) {
+        List<LocalDate> dates = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
+
+        try {
+            for (String date : dateInput.split(",")) {
+                dates.add(LocalDate.parse(date.trim(), formatter));
+            }
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid Date Format. Please Use The Format 'ddMMMyyyy' (E.g., 11Sep2020). ");
+        }
+
+        return dates;
+    }
 	
 	
 }

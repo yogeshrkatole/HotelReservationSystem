@@ -24,36 +24,21 @@ public static void main(String[] args) {
     System.out.print("Enter dates like (26Mar2009,27Mar2009,28Mar2009): ");
     String dateInput = scanner.nextLine();
     
-    List<LocalDate> dates = new ArrayList<>();
-    
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
-    for (String date : dateInput.split(",")) {
-        dates.add(LocalDate.parse(date.trim(), formatter));
-    }
-    
     System.out.println("Cheapest Hotels By Rates");
     List<String> cheapestHotelsByRates=new ArrayList<String>();
-    cheapestHotelsByRates = system.findCheapestHotelsByWeekdayAndWeekendRates(customerType, dates);
+    cheapestHotelsByRates = system.findCheapestHotelsByRates(customerType, dateInput);
     for(int i=0;i<cheapestHotelsByRates.size();i++) {
     	System.out.println(cheapestHotelsByRates.get(i));
     }
      System.out.println();
-    
-    String cheapestHotel = system.findCheapestHotel(customerType, dates);
-    Double totalRates=0.0;
-    int rating=0;
-    for(int i=0;i<system.getHotels().size();i++) {
-    	if(cheapestHotel.equalsIgnoreCase(system.getHotels().get(i).getName())) {
-    		totalRates = system.calculateTotalCost(system.getHotels().get(i), customerType, dates);
-    		rating=system.getHotels().get(i).getRating();
-    	}
-    }
-    System.out.println("Cheapest Hotels By Rates And Rating");
-    System.out.println("Cheapest Hotel: " + cheapestHotel+", Rating:"+rating+", Total Rates:$"+totalRates);
+   
+    System.out.println("------Cheapest Hotels By Rates And Rating-----");
+    String cheapestHotel = system.findCheapestHotelByRatesAndRating(customerType, dateInput); 
+    System.out.println(cheapestHotel);
     System.out.println();
     
     System.out.println("Best Rated Hotel");
-    System.out.println(system.findBestRatedHotel(customerType, dates));
+    System.out.println(system.findBestRatedHotel(customerType, dateInput));
     
     scanner.close();
 }
